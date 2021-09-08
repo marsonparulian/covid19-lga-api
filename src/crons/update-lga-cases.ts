@@ -9,6 +9,6 @@ export default async () => {
 
         // DB upsert many.
     } catch (e) {
-        console.error(e.message ? e.message : e);
+        throw (e);
     }
 }
