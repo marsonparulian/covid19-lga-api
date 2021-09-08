@@ -7,6 +7,7 @@ jest.setTimeout(12000);
 describe("Update LGA cases", () => {
     test.todo("Data source response with failed (unsuccessful) result");
     test.todo("Data source response with available data /records");
+    /*
     test("fetchRecords ", async () => {
         const records = await fetchRecords().catch((e) => {
             throw (e);
@@ -30,4 +31,5 @@ describe("Update LGA cases", () => {
             lga_name19: expect.any(String),
         }]));
     });
+    */
 })
