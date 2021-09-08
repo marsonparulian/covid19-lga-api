@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "update-lga-cases": "node dist/run-update-lga-cases.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:clearCache": "jest --clearCache"
   },
   "repository": {
     "type": "git",
