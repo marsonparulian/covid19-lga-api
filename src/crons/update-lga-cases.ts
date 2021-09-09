@@ -8,6 +8,7 @@ export default async () => {
     try {
         // Fetch data from data source. Will throw error if response is error or invalid data format.
 
+        // Filter the records. Remove empty date or empty LGA
 
         // TODO Process data to match DB schema .
 
@@ -42,4 +43,19 @@ export const fetchRecords = async (): Promise<IRecord[]> => {
             }
             return data.result.records;
         });
+}
+
+
+/**
+ * Filter records. Remove record with falsy `notification_date` or falsy `lga_code19`
+ * @param records<IRecord[]> - Source records.
+ * @return <IRecord[]> - Filtered records
+ */
+export const filterRecords = (records: IRecord[]): IRecord[] => {
+    return records.filter((rec) => {
+        if (rec.notification_date && rec.lga_code19 && rec.lga_name19) {
+            return true;
+        }
+        return false;
+    });
 }
