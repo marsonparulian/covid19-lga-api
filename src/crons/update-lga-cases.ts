@@ -22,7 +22,7 @@ export const fetchRecords = async (): Promise<IRecord[]> => {
     const resourceId = "21304414-1ff1-4243-a5d2-f52778048b29"; // Resource for covid locations data.
     const select = "notification_date, count(*) as cases, lga_code19, lga_name19 "; // Fields to be selected
     const groupBy = "notification_date, lga_code19, lga_name19"; // Grouping fields
-    const orderBy = "notification_date";
+    const orderBy = "notification_date DESC";
     const startDate = '2021-09-05'; // Start date of records  to be fetched.
 
     //  Prepare sql statements
