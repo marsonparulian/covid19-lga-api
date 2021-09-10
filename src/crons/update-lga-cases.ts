@@ -1,4 +1,5 @@
 import fetch from "cross-fetch";
+import { ILga } from "../types/common";
 import { IRecord } from "../types/dataSource";
 
 /**
@@ -58,4 +59,18 @@ export const filterRecords = (records: IRecord[]): IRecord[] => {
         }
         return false;
     });
+}
+
+/**
+ * Convert `records` to match array of `ILga`
+ * @param records {IRecord[]} - Source records
+ * @return {ILga[]} - Resulted array of `ILga`
+ */
+export const convertRecords = (records: IRecord[]): ILga[] => {
+    // Prepare variables
+    let result: ILga[] = [];
+
+    // Iterate through records
+
+    return result;
 }
