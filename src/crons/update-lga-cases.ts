@@ -72,22 +72,26 @@ export const convertRecords = (records: IRecord[]): ILga[] => {
 
     // Iterate through records
     for (let i = 0; i < records.length; i++) {
-        // Flag to use if LGA of the current record already exist in `result`
-        const isLGAInit: boolean = false;
-
+        // Flag of result index to be used if the same `coe19` found in `result
+        let foundIndex: number = -1; // Not yet found
         // Iterate throught the result to match `lga_code19`
         for (let j = 0; j < result.length; j++) {
             // Is matched ?
             if (records[i].lga_code19 === result[j].code19) {
                 // LGA has been initiated in `result`
                 // Note: `j` is the LGA  matching current iterated recordindex
+                foundIndex = j;
                 break;
             }
         }
 
         // LGA has been initiated ?
-        if (isLGAInit) {
-            // TODO append to `notifiedCasesByDates`
+        if (foundIndex !== -1) {
+            // append to `notifiedCasesByDates`
+            result[foundIndex].notifiedCasesByDates.push({
+                date: records[i].notification_date,
+                cases: records[i].cases,
+            });
         } else {
             // Init the current LGA
             result.push({

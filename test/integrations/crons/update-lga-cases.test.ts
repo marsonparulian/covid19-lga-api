@@ -1,4 +1,5 @@
 import updateLgaCases, { fetchRecords, filterRecords, convertRecords } from "../../../src/crons/update-lga-cases";
+import { IRecord } from "../../../src/types/dataSource";
 import { record1, record2, record3 } from "../../testlibs/dataSource.testlib";
 
 // Increase timeout since one of test will require to fetch from data source.
@@ -98,6 +99,67 @@ describe("Update LGA cases", () => {
 
             }));
         });
-        test.todo("With 2 LGAs have multiple records");
+        test("With 2 LGAs have multiple records", () => {
+            // Create dummy records so some LGAs have multiple records
+            const record1Dummy: IRecord = Object.assign({}, record1, {
+                notification_date: "2022-12-24",
+            });
+            const record3Dummy = Object.assign({}, record3, {
+                notification_date: "2015-04-18",
+            });
+
+            // Construct records
+            const records: IRecord[] = [
+                record1,
+                record2,
+                record3Dummy,
+                record1Dummy,
+                record3,
+            ];
+
+            // Convert 
+            const lgas = convertRecords(records);
+
+            // Check number of LGAs 
+            expect(lgas.length).toBe(3);
+            // Assert the first LGA
+            expect(lgas[0]).toEqual(expect.objectContaining({
+                code19: record1.lga_code19,
+                name19: record1.lga_name19,
+                notifiedCasesByDates: [
+                    {
+                        date: record1.notification_date,
+                        cases: record1.cases,
+                    }, {
+                        date: record1Dummy.notification_date,
+                        cases: record1Dummy.cases,
+                    }
+                ],
+            }));
+            // Assert the second LGA
+            expect(lgas[1]).toEqual(expect.objectContaining({
+                code19: record2.lga_code19,
+                name19: record2.lga_name19,
+                notifiedCasesByDates: [{
+                    date: record2.notification_date,
+                    cases: record2.cases,
+                }],
+            }));
+            // Assert the third LGA
+
+            expect(lgas[2]).toEqual(expect.objectContaining({
+                code19: record3Dummy.lga_code19,
+                name19: record3.lga_name19,
+                notifiedCasesByDates: [
+                    {
+                        date: record3Dummy.notification_date,
+                        cases: record3Dummy.cases,
+                    }, {
+                        date: record3.notification_date,
+                        cases: record3.cases,
+                    }
+                ],
+            }));
+        });
     });
 });
