@@ -1,5 +1,4 @@
-import { notDeepEqual } from "assert";
-import updateLgaCases, { fetchRecords, filterRecords } from "../../../src/crons/update-lga-cases";
+import updateLgaCases, { fetchRecords, filterRecords, convertRecords } from "../../../src/crons/update-lga-cases";
 import { record1, record2, record3 } from "../../testlibs/dataSource.testlib";
 
 // Increase timeout since one of test will require to fetch from data source.
@@ -60,7 +59,45 @@ describe("Update LGA cases", () => {
             expect(record1.lga_code19).not.toBe(record3.lga_code19);
             expect(record2.lga_code19).not.toBe(record3.lga_code19);
         });
-        test.todo("With basic test data");
+        test("With basic test data", () => {
+            // Prepare data test
+            const records = [record1, record2, record3];
+
+            // Process / convert
+            const lgas = convertRecords(records);
+
+            // Should be 3 lgas
+            expect(lgas.length).toBe(3);
+            // Assert the first LGA
+            expect(lgas[0]).toEqual(expect.objectContaining({
+                code19: record1.lga_code19,
+                name19: record1.lga_name19,
+                notifiedCasesByDates: [
+                    {
+                        date: record1.notification_date,
+                        cases: record1.cases
+                    }
+                ],
+            }));
+            // Assert the second LGA
+            expect(lgas[1]).toEqual(expect.objectContaining({
+                code19: record2.lga_code19,
+                name19: record2.lga_name19,
+                notifiedCasesByDates: [{
+                    date: record2.notification_date,
+                    cases: record2.cases,
+                }],
+            }));
+            // Assert the third LGA
+            expect(lgas[2]).toEqual(expect.objectContaining({
+                code19: record3.lga_code19,
+                notifiedCasesByDates: [{
+                    date: record3.notification_date,
+                    cases: record3.cases,
+                }],
+
+            }));
+        });
         test.todo("With 2 LGAs have multiple records");
     });
 });
