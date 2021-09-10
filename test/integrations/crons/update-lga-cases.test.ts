@@ -1,3 +1,4 @@
+import { notDeepEqual } from "assert";
 import updateLgaCases, { fetchRecords, filterRecords } from "../../../src/crons/update-lga-cases";
 import { record1, record2, record3 } from "../../testlibs/dataSource.testlib";
 
@@ -54,7 +55,11 @@ describe("Update LGA cases", () => {
         ]);
     });
     describe("Convert data source records to ILga app format", () => {
-        test.todo("Test data 'record1', 'record2', and 'record3' should not have the same LGA");
+        test("Test data 'record1', 'record2', and 'record3' should not have the same LGA", () => {
+            expect(record1.lga_code19).not.toBe(record2.lga_code19);
+            expect(record1.lga_code19).not.toBe(record3.lga_code19);
+            expect(record2.lga_code19).not.toBe(record3.lga_code19);
+        });
         test.todo("With basic test data");
         test.todo("With 2 LGAs have multiple records");
     });
