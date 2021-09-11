@@ -24,6 +24,7 @@
     "@types/mongoose": "^5.11.97",
     "@types/node": "^16.7.13",
     "cross-fetch": "^3.1.4",
+    "dotenv": "^10.0.0",
     "mongoose": "^6.0.5"
   },
   "devDependencies": {
