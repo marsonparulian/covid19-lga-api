@@ -21,8 +21,10 @@
   },
   "homepage": "https://github.com/marsonparulian/covid19-lga-api#readme",
   "dependencies": {
+    "@types/mongoose": "^5.11.97",
     "@types/node": "^16.7.13",
-    "cross-fetch": "^3.1.4"
+    "cross-fetch": "^3.1.4",
+    "mongoose": "^6.0.5"
   },
   "devDependencies": {
     "@types/jest": "^27.0.1",
