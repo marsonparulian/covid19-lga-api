@@ -161,4 +161,15 @@ describe("Update LGA cases", () => {
             }));
         });
     });
+    test("Save LGAs", async () => {
+        // Connect to DB    test("Save LGAs", async () => {
+
+        // Drop DB
+
+        // Save LGAs converted from records
+
+        // Fetch LGA from DB 
+
+        // Assert the LGAs exist in DB
+    });
 });
