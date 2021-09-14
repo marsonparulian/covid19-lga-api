@@ -1,4 +1,7 @@
-import updateLgaCases, { fetchRecords, filterRecords, convertRecords } from "../../../src/crons/update-lga-cases";
+import updateLgaCases, { fetchRecords, filterRecords, convertRecords, insertManyLgas } from "../../../src/crons/update-lga-cases";
+import dbService from "../../../src/services/db.service";
+import Lga from "../../../src/db/models/lga.model";
+import { ILga } from "../../../src/types/common";
 import { IRecord } from "../../../src/types/dataSource";
 import { record1, record2, record3 } from "../../testlibs/dataSource.testlib";
 
@@ -7,6 +10,8 @@ jest.setTimeout(12000);
 
 // Test updating LGA cases
 describe("Update LGA cases", () => {
+    // Persist converted lgas to used in 'save' test.
+    let toBeSavedLgas: ILga[];
     test.todo("Data source response with failed (unsuccessful) result");
     /*
         test("fetchRecords - successful", async () => {
@@ -145,7 +150,6 @@ describe("Update LGA cases", () => {
                 }],
             }));
             // Assert the third LGA
-
             expect(lgas[2]).toEqual(expect.objectContaining({
                 code19: record3Dummy.lga_code19,
                 name19: record3.lga_name19,
@@ -159,17 +163,77 @@ describe("Update LGA cases", () => {
                     }
                 ],
             }));
+
+            // Persis the converted Lgas to be used in in the next test
+            toBeSavedLgas = lgas;
         });
     });
     test("Save LGAs", async () => {
-        // Connect to DB    test("Save LGAs", async () => {
+        // Connect to DB   
+        await dbService.connect().catch((e) => {
+            throw (e);
+        });
 
         // Drop DB
+        await dbService.dropDatabase().catch((e) => {
+            throw (e);
+        });
 
         // Save LGAs converted from records
+        const savedLgas: ILga[] = await insertManyLgas(toBeSavedLgas).catch((e) => {
+            throw (e);
+        });
+
+        // The save result should be identical with the provided `lgas`
+        // The Saved result should have the same number of elements
+        expect(savedLgas.length).toBe(toBeSavedLgas.length);
+        // Iterate through elements to assert each element
+        savedLgas.forEach((lga, lgaKey) => {
+            // Assert the lga
+            expect(lga).toEqual(expect.objectContaining({
+                _id: toBeSavedLgas[lgaKey].code19,
+                name19: toBeSavedLgas[lgaKey].name19,
+            }));
+
+            // Iterate through the `notifiedCasesByDates`
+            lga.notifiedCasesByDates.forEach((notified, notifiedKey) => {
+                // Assert the `notifiedCasesByDates` element
+                const n = toBeSavedLgas[lgaKey].notifiedCasesByDates[notifiedKey];
+                expect(notified).toEqual(expect.objectContaining(n));
+            });
+        });
 
         // Fetch LGA from DB 
+        const fetchedLgas: ILga[] = await Lga.find().lean().catch(e => {
+            throw (e);
+        });
 
         // Assert the LGAs exist in DB
+        // Assert the fetched Lgas has the same number element with the `savedLgas`
+        expect(fetchedLgas.length).toBe(savedLgas.length);
+        // Assert the `fetchedLgas` is identical with the `savedLgas`
+        // Iterate through the `savedLgas`
+        savedLgas.forEach((savedLga) => {
+            // Should found object with same values in `fetchedLgas`
+            const foundLga = fetchedLgas.find(fetchedLga => (
+                savedLga._id === fetchedLga._id
+                && savedLga.name19 === fetchedLga.name19
+            ));
+
+            // If Lga not found, test is failed
+            if (!foundLga) throw new Error(`LGA not found : ${savedLga.name19}`);
+
+            // Iterate through the `savedLga.notifiedCasesByDates`
+            savedLga.notifiedCasesByDates.forEach(savedN => {
+                // Should exist in `fetchedLga.notifiedCasesByDates`
+                if (!foundLga.notifiedCasesByDates.some(fetchedN => (
+                    savedN.date === fetchedN.date
+                    && savedN.cases === fetchedN.cases
+                ))) throw new Error("Not found in `fetched.notifiedCasesByDates`");
+            });
+        });
+
+        // Disconnect DB
+        await dbService.disconnect();
     });
 });

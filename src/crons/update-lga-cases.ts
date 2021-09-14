@@ -1,4 +1,6 @@
 import fetch from "cross-fetch";
+import { InsertManyOptions } from "mongoose";
+import Lga from "../db/models/lga.model";
 import { ILga } from "../types/common";
 import { IRecord } from "../types/dataSource";
 
@@ -106,4 +108,15 @@ export const convertRecords = (records: IRecord[]): ILga[] => {
         }
     }
     return result;
+}
+/**
+ * Insert many `ILga`s to DB
+ */
+export const insertManyLgas = async (lgas: ILga[]): Promise<ILga[]> => {
+    // `InsertManyOptions`
+    const options: InsertManyOptions = {
+        lean: true,
+    };
+    // Mongoose failed validation will throw error. Therefore `try-catch` need not to be implemented here.
+    return Lga.insertMany(lgas, options);
 }
