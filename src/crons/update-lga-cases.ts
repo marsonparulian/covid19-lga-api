@@ -95,7 +95,7 @@ export const convertRecords = (records: IRecord[]): ILga[] => {
         } else {
             // Init the current LGA
             result.push({
-                _id: "",
+                _id: records[i].lga_code19,
                 code19: records[i].lga_code19,
                 name19: records[i].lga_name19,
                 notifiedCasesByDates: [{

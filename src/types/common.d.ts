@@ -11,8 +11,8 @@ export interface ICasesByDate {
  * LGA interface
  */
 export interface ILga {
-    _id: string;
-    code19: string;
+    _id: string;  // `code19`
+    code19: string; // Will be removed in the future since `coe19` is used as `_id`
     name19: string;
     notifiedCasesByDates: ICasesByDate[];
 }
