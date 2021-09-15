@@ -9,7 +9,13 @@ import { IRecord } from "../types/dataSource";
  */
 export default async () => {
     try {
+        console.log("Updating lga");
+
+        // Drop collection
+
+
         // Fetch data from data source. Will throw error if response is error or invalid data format.
+        const records = await fetchRecords();
 
         // Filter the records. Remove empty date or empty LGA
 
