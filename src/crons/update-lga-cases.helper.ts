@@ -4,28 +4,6 @@ import Lga from "../db/models/lga.model";
 import { ILga } from "../types/common";
 import { IRecord } from "../types/dataSource";
 
-/**
- * Update cases in each lga, based on the fetched data
- */
-export default async () => {
-    try {
-        console.log("Updating lga");
-
-        // Drop collection
-
-
-        // Fetch data from data source. Will throw error if response is error or invalid data format.
-        const records = await fetchRecords();
-
-        // Filter the records. Remove empty date or empty LGA
-
-        // TODO Process data to match DB schema .
-
-        // DB upsert many.
-    } catch (e) {
-        throw (e);
-    }
-}
 export const fetchRecords = async (): Promise<IRecord[]> => {
     // Prepare variables
     const resourceId = "21304414-1ff1-4243-a5d2-f52778048b29"; // Resource for covid locations data.
@@ -125,4 +103,11 @@ export const insertManyLgas = async (lgas: ILga[]): Promise<ILga[]> => {
     };
     // Mongoose failed validation will throw error. Therefore `try-catch` need not to be implemented here.
     return Lga.insertMany(lgas, options);
+}
+
+export default {
+    fetchRecords,
+    filterRecords,
+    convertRecords,
+    insertManyLgas,
 }

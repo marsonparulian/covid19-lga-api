@@ -1,4 +1,4 @@
-import updateLgaCases, { fetchRecords, filterRecords, convertRecords, insertManyLgas } from "../../../src/crons/update-lga-cases";
+import { fetchRecords, filterRecords, convertRecords, insertManyLgas } from "../../../src/crons/update-lga-cases.helper";
 import dbService from "../../../src/services/db.service";
 import Lga from "../../../src/db/models/lga.model";
 import { ILga } from "../../../src/types/common";
@@ -8,8 +8,8 @@ import { record1, record2, record3 } from "../../testlibs/dataSource.testlib";
 // Increase timeout since one of test will require to fetch from data source.
 jest.setTimeout(12000);
 
-// Test updating LGA cases
-describe("Update LGA cases", () => {
+// (Separately) test methods for updating LGA cases
+describe("Update LGA cases methods (separately)", () => {
     // Persist converted lgas to used in 'save' test.
     let toBeSavedLgas: ILga[];
     test.todo("Data source response with failed (unsuccessful) result");
