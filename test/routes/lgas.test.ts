@@ -4,6 +4,10 @@ import db from "../../src/services/db.service";
 import Lga from "../../src/db/models/lga.model";
 import { ILga } from "../../src/types/common";
 import * as commonTestlib from "../testlibs/common.testlib";
+import texts from "../../src/texts";
+
+// Increase timeout
+jest.setTimeout(1200);
 
 // Test for `/lgas` URL
 describe("GET /lgas ", () => {
@@ -38,9 +42,29 @@ describe("GET /lgas ", () => {
         expect(populatedCollection.length).toBe(lgasData.length);
 
         // Make request
+        const response = await supertest(app)
+            .get("/api/lgas").catch((e) => {
+                throw (e);
+            });
 
         // Response status should be 200
-        // Response body should contain the basic data of LGAs (without `notifiedCasesByDates`)
+        expect(response.status).toBe(200);
+        // Response body should contain expected format
+        expect(response.body).toEqual(expect.objectContaining({
+            message: texts.SUCCESS,
+            lgas: expect.any(Array),
+        }));
+        // Response body.lgas should contain same number of element with `lgaData`
+        expect(response.body.lgas.length).toBe(lgasData.length);
+        // Iterate through LGAs  data
+        lgasData.forEach((lga) => {
+            // Response body should contain the basic data of LGAs (without `notifiedCasesByDates`)
+            expect(response.body.lgas).toEqual(expect.arrayContaining([{
+                _id: lga._id,
+                name19: lga.name19,
+            }]));
+        });
+
     });
     afterAll(async () => {
         await db.disconnect();
