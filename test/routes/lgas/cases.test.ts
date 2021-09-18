@@ -45,6 +45,21 @@ describe("Route `/lgas/cases` tests", () => {
             message: texts.BAD_REQUEST,
         })
     });
+    test("`lgaIds` is not an array. Should respond with 'Bad request'", async () => {
+        // Make request with `lgaIds` as string
+        const response = await supertest(app)
+            .get("/api/lgas/cases")
+            .query({
+                lgaIds: "random-id"
+            });
+
+        // Should be 400
+        expect(response.status).toBe(400);
+        // Should respond with `message`
+        expect(response.body).toEqual({
+            message: texts.BAD_REQUEST,
+        });
+    });
     test.todo("Single `lgaIds` in query params.");
     test.todo("Multiple `lgaIds` in query params.");
     afterAll(async () => {

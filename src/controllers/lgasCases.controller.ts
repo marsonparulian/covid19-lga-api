@@ -21,7 +21,7 @@ const controller = async (req: Request, res: Response) => {
 const validateParams = (req: Request, res: Response, next: NextFunction): void => {
     // Is `lgaIds` is non empty array ?
     const lgaIds = req.query.lgaIds;
-    const isParamsValid = !!lgaIds;
+    const isParamsValid = !!lgaIds && Array.isArray(lgaIds);
     console.log("lgaIds : ", lgaIds);
 
     if (!isParamsValid) {
