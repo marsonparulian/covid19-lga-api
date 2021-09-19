@@ -60,6 +60,24 @@ describe("Route `/lgas/cases` tests", () => {
             message: texts.BAD_REQUEST,
         });
     });
+    test("`lgaIds` in query params is a number not a string", async () => {
+        // Make request with `lgaIds` as number
+        const response = await supertest(app)
+            .get("/api/lgas/cases")
+            .query({
+                lgaIds: [2, 3, 4],
+            }).catch((e) => {
+                throw (e);
+            });
+
+        // Should be 200
+        expect(response.status).toBe(200);
+        // Response.body should contain 'message'
+        expect(response.body).toEqual(expect.objectContaining({
+            message: texts.SUCCESS,
+            lgas: [],
+        }))
+    });
     test.todo("Single `lgaIds` in query params.");
     test.todo("Multiple `lgaIds` in query params.");
     afterAll(async () => {

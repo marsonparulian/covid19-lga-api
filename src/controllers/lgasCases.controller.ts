@@ -7,13 +7,30 @@ import { ILga } from "../types/common";
  * Respond  with   `notifiedCasesByDates` for LGAs provided in `query` params.
  */
 const controller = async (req: Request, res: Response) => {
-    // FIXME : Fetch LGAs based on LGA ids in query params
-    const lgas: void | ILga[] = [];
+    // Prepare params
+    const lgaIds: any[] = Array.isArray(req.query.lgaIds) ? req.query.lgaIds : [];
 
-    // Respond
-    res.status(501).json({
-        message: texts.SUCCESS,
+    // Setup  filter
+    const filter = {
+        _id: {
+            $in: lgaIds,
+        }
+    };
+
+    // Fetch
+    const lgas: void | ILga[] = await Lga.find(filter).lean().catch((e) => {
+        // Respond error
+        res.status(500).json({
+            message: texts.ERROR,
+            e,
+        });
     });
+
+    // Success 
+    res.status(200).json({
+        message: texts.SUCCESS,
+        lgas: lgas,
+    })
 }
 /**
  * Validate parameters
@@ -22,7 +39,6 @@ const validateParams = (req: Request, res: Response, next: NextFunction): void =
     // Is `lgaIds` is non empty array ?
     const lgaIds = req.query.lgaIds;
     const isParamsValid = !!lgaIds && Array.isArray(lgaIds);
-    console.log("lgaIds : ", lgaIds);
 
     if (!isParamsValid) {
         res.status(400).json({
@@ -34,4 +50,5 @@ const validateParams = (req: Request, res: Response, next: NextFunction): void =
 }
 export default [
     validateParams,
+    controller,
 ];
