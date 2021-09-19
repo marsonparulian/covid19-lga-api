@@ -8,7 +8,8 @@ import { ILga } from "../types/common";
  */
 const controller = async (req: Request, res: Response) => {
     // Prepare params
-    const lgaIds: any[] = Array.isArray(req.query.lgaIds) ? req.query.lgaIds : [];
+    // If `lgaIds` is not an array, convert to array.
+    const lgaIds: any[] = Array.isArray(req.query.lgaIds) ? req.query.lgaIds : [req.query.lgaIds];
 
     // Setup  filter
     const filter = {
@@ -38,7 +39,7 @@ const controller = async (req: Request, res: Response) => {
 const validateParams = (req: Request, res: Response, next: NextFunction): void => {
     // Is `lgaIds` is non empty array ?
     const lgaIds = req.query.lgaIds;
-    const isParamsValid = !!lgaIds && Array.isArray(lgaIds);
+    const isParamsValid = !!lgaIds;
 
     if (!isParamsValid) {
         res.status(400).json({

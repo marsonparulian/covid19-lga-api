@@ -19,3 +19,13 @@ export const lga2: ILga = {
         { date: "2021-06-05", cases: 3 },
     ],
 }
+export const lga3: ILga = {
+    _id: "1200",
+    code19: "1200",
+    name19: "Bradfield",
+    notifiedCasesByDates: [
+        { date: "2021-06-08", cases: 31 },
+        { date: "2021-06-20", cases: 23 },
+        { date: "2021-07-01", cases: 59 },
+    ],
+}
