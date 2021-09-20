@@ -118,7 +118,40 @@ describe("Route `/lgas/cases` tests", () => {
             )
         ]);
     });
-    test.todo("Multiple `lgaIds` in query params.");
+    test("Multiple `lgaIds` in query params.", async () => {
+        // Define which lgass to fetch
+        const toBeFetchedLgas = [lgaData[1], lgaData[2]];
+
+        // Make request to fetch lgas
+        const response = await supertest(app)
+            .get("/api/lgas/cases")
+            .query({
+                lgaIds: toBeFetchedLgas.map((v) => v._id),
+            }).catch((e) => {
+                throw (e);
+            });
+
+        // Should be 200
+        expect(response.status).toBe(200);
+        // Response body should have `message` & `lgas` properties
+        expect(response.body).toEqual({
+            message: texts.SUCCESS,
+            lgas: expect.any(Array),
+        });
+        // Response.body.lgas should have 2 elements
+        expect(response.body.lgas.length).toBe(toBeFetchedLgas.length);
+        // Iterate through each `toBeFetchLgas` (as in query params)
+        toBeFetchedLgas.forEach(lga => {
+            // Should be included in Response.body.lgas
+            expect(response.body.lgas).toContainEqual(expect.objectContaining(
+                // Compare all properties of `lga`, except `notifiedCasesByDates`
+                Object.assign({}, lga, {
+                    // Convert to `expect.objectContaining` because there is additional `_id` property in `CasesByDate` document.
+                    notifiedCasesByDates: lga.notifiedCasesByDates.map(v => expect.objectContaining(v)),
+                }),
+            ));
+        });
+    });
     afterAll(async () => {
         await db.disconnect();
     })
