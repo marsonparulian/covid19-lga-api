@@ -5,6 +5,6 @@ import updateLgaCases from "./update-lga-cases";
  */
 try {
     updateLgaCases();
-} catch (e) {
+} catch (e: any) {
     console.error(e.message ? e.message : e);
 }
