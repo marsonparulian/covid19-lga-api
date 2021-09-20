@@ -2,8 +2,10 @@
   "name": "covid19-lga-api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
+    "start": "node dist/server.js",
+    "build": "tsc",
     "update-lga-cases": "node dist/run-update-lga-cases.js",
     "test": "jest",
     "test:watch": "jest --watch",
