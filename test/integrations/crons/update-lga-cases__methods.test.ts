@@ -13,31 +13,31 @@ describe("Update LGA cases methods (separately)", () => {
     // Persist converted lgas to used in 'save' test.
     let toBeSavedLgas: ILga[];
     test.todo("Data source response with failed (unsuccessful) result");
-    /*
-        test("fetchRecords - successful", async () => {
-            const records = await fetchRecords().catch((e) => {
-                throw (e);
-            });
-    
-            // Verify records has element more than 1
-            expect(records.length).toBeGreaterThan(0);
-            // Verify the sape of the first element match the `IRecord` interface
-            const shapeIRecord = expect.objectContaining({
-                cases: expect.any(Number),
-                notification_date: expect.any(String),
-                lga_code19: expect.any(String),
-                lga_name19: expect.any(String),
-            });
-            expect(records[0]).toEqual(shapeIRecord);
-            // Verify the shape of all elements
-            expect(records).toEqual(expect.arrayContaining([{
-                cases: expect.any(Number),
-                notification_date: expect.any(String),
-                lga_code19: expect.any(String),
-                lga_name19: expect.any(String),
-            }]));
+
+    test("fetchRecords - successful", async () => {
+        const records = await fetchRecords().catch((e) => {
+            throw (e);
         });
-        */
+
+        // Verify records has element more than 1
+        expect(records.length).toBeGreaterThan(0);
+        // Verify the sape of the first element match the `IRecord` interface
+        const shapeIRecord = expect.objectContaining({
+            cases: expect.any(Number),
+            notification_date: expect.any(String),
+            lga_code19: expect.any(String),
+            lga_name19: expect.any(String),
+        });
+        expect(records[0]).toEqual(shapeIRecord);
+        // Verify the shape of all elements
+        expect(records).toEqual(expect.arrayContaining([{
+            cases: expect.any(Number),
+            notification_date: expect.any(String),
+            lga_code19: expect.any(String),
+            lga_name19: expect.any(String),
+        }]));
+    });
+
     test("Should filtere records with empty date and lga code", () => {
         // Prepare data
         const records = [

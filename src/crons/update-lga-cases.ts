@@ -10,7 +10,7 @@ export default async (): Promise<void> => {
         await Lga.collection.drop();
 
         // Fetch data from data source. Will throw error if response is error or invalid data format.
-        const records = await fetchRecords();
+        const records = await fetchRecords(7);
 
         // Filter the records. Remove empty date or empty LGA
         const filteredRecords = filterRecords(records);
