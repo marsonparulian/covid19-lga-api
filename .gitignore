@@ -3,3 +3,6 @@ dist
 
 .env
 src/crons/try*
+
+# swagger file
+src/doc/swagger.json
