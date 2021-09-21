@@ -7,10 +7,16 @@ import Lga from "../db/models/lga.model";
 export default async (): Promise<void> => {
     try {
         // Drop collection
-        await Lga.collection.drop();
+        await Lga.collection.drop()
+            .catch((e) => {
+                throw (e);
+            });
 
         // Fetch data from data source. Will throw error if response is error or invalid data format.
-        const records = await fetchRecords(7);
+        const records = await fetchRecords(7)
+            .catch((e) => {
+                throw (e);
+            });
 
         // Filter the records. Remove empty date or empty LGA
         const filteredRecords = filterRecords(records);
@@ -19,7 +25,10 @@ export default async (): Promise<void> => {
         const lgas = convertRecords(filteredRecords);
 
         // DB insert many.
-        await insertManyLgas(lgas);
+        await insertManyLgas(lgas)
+            .catch((e) => {
+                throw (e);
+            });
     } catch (e) {
         throw (e);
     }
