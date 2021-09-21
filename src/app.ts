@@ -1,5 +1,7 @@
 import express, { Request, Response } from "express";
 import texts from "./texts";
+import swaggerUiExpress from "swagger-ui-express";
+import swaggerFile from "./doc/swagger.json";
 // Import middlewares
 import lgaRouter from "./routers/lgas.router";
 
@@ -8,6 +10,9 @@ import lgaRouter from "./routers/lgas.router";
 const app = express();
 // Use routers
 app.use("/api/lgas", lgaRouter);
+
+// Documentation
+app.use("/doc", swaggerUiExpress.serve, swaggerUiExpress.setup(swaggerFile));
 
 // 404
 app.use((req: Request, res: Response) => {
