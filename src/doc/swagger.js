@@ -16,7 +16,7 @@ if (!process.env.A_FULL_HOST) {
 const doc = {
     info: {
         version: "1.0.0",
-        title: "Covid-19 LTA API",
+        title: "Covid-19 LGA API",
         description: "A simple Covid19 by LGA API. This API provides number of cases per LGA and per days. The number of previous days is kept to minimum (7 days) to minimize the size of DB. The data is fetched everyday from NSW Covid-19 API triggered by github actions.",
     },
     host: `${process.env.A_FULL_HOST}`,
