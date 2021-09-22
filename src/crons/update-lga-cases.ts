@@ -1,10 +1,14 @@
 import { fetchRecords, filterRecords, convertRecords, insertManyLgas } from "./update-lga-cases.helper";
+import db from "../services/db.service";
 import Lga from "../db/models/lga.model";
 
 /**
  * Update cases in each lga, based on the fetched data
  */
 export default async (): Promise<void> => {
+    // Connect to DB
+    await db.connect();
+
     // Drop collection
     await Lga.collection.drop();
 
@@ -20,4 +24,6 @@ export default async (): Promise<void> => {
     // DB insert many.
     await insertManyLgas(lgas);
 
+    // Close DB connection
+    await db.disconnect();
 }
