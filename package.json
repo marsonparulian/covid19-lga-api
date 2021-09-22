@@ -7,7 +7,7 @@
     "start": "node dist/server.js",
     "swaggerAutogen": "node src/doc/swagger.js",
     "build": "tsc",
-    "update-lga-cases": "node dist/run-update-lga-cases.js",
+    "update-lga-cases": "node dist/crons/run-update-lga-cases.js",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:clearCache": "jest --clearCache"
