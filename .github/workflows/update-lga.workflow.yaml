@@ -1,0 +1,17 @@
+name: update-lga-cases
+on: workflow_dispatch
+jobs:
+  update-lga-cases:
+    runs-on: ubuntu-latest
+    env:
+      A_DB_USER: ${{secrets.A_DB_USER}}
+      A_DB_PASSWORD: ${{secrets.A_DB_PASSWORD}}
+      A_DB_NAME: 'covid19-lga'
+      A_FULL_HOST: 'localhost:3000'
+    steps:
+        - uses: actions/checkout@v2
+        - uses: actions/setup-node@v2
+          with:
+            node-version: '14'
+        - run: npm install
+        - run: npm run build
