@@ -1,7 +1,7 @@
 name: update-lga-cases
 on:
   schedule:
-    - cron: '23 12 * * *'
+    - cron: '23 1,7 * * *'
 jobs:
   update-lga-cases:
     runs-on: ubuntu-latest
