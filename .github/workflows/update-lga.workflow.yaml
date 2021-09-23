@@ -1,5 +1,7 @@
 name: update-lga-cases
-on: workflow_dispatch
+on:
+  schedule:
+    - cron: '23 12 * * *'
 jobs:
   update-lga-cases:
     runs-on: ubuntu-latest
