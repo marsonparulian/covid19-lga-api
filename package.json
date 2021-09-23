@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node dist/server.js",
     "swaggerAutogen": "node src/doc/swagger.js",
-    "build": "tsc",
+    "build": "npm run swaggerAutogen && tsc",
     "update-lga-cases": "node dist/crons/run-update-lga-cases.js",
     "test": "jest",
     "test:watch": "jest --watch",
